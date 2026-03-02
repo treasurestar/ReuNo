@@ -1,7 +1,7 @@
 export default defineNuxtRouteMiddleware(async (to) => {
   if (import.meta.server) return
 
-  const publicRoutes = ['/login', '/registro', '/confirmar-email', '/confirmar-presenca']
+  const publicRoutes = ['/login', '/registro', '/confirmar-email', '/confirmar-presenca', '/redefinir-senha']
   const isPublic = publicRoutes.some(r => to.path === r || to.path.startsWith(r + '/'))
 
   const { user, initialize, ensureProfile, isAdmin, bootstrapAdmin } = useAuth()
