@@ -1,9 +1,8 @@
 <template>
   <div v-if="authLoading" class="flex min-h-screen items-center justify-center bg-[#F8FAFC] dark:bg-dark-bg">
     <div class="flex flex-col items-center gap-4">
-      <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary text-white shadow-xl shadow-primary/30">
-        <span class="material-symbols-outlined text-2xl">diamond</span>
-      </div>
+      <img src="/logo-claro.png" alt="Reunô" class="h-12 block dark:hidden" />
+      <img src="/logo-escuro.png" alt="Reunô" class="h-12 hidden dark:block" />
       <span class="material-symbols-outlined animate-spin text-[#94A3B8] dark:text-[#71717a]">progress_activity</span>
     </div>
   </div>

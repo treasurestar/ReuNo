@@ -3,10 +3,8 @@
     <div class="relative">
       <div class="glass-card rounded-3xl p-10 stagger relative">
         <div class="flex flex-col items-center gap-2 text-center">
-          <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary text-white shadow-xl shadow-primary/30">
-            <span class="material-symbols-outlined text-2xl">diamond</span>
-          </div>
-          <h1 class="text-2xl font-extrabold text-slate-900 dark:text-[#fafafa]">Reunô</h1>
+          <img src="/logo-claro.png" alt="Reunô" class="h-12 block dark:hidden" />
+          <img src="/logo-escuro.png" alt="Reunô" class="h-12 hidden dark:block" />
           <p class="text-sm text-slate-500 dark:text-[#a1a1aa]">Acesso seguro para agendar a sala</p>
         </div>
 
