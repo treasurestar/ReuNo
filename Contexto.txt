@@ -1,0 +1,23 @@
+Contexto
+
+App - Sistema de Agendamento da Sala de Reuniões
+
+O objetivo é criar um webapp que permita agendar reuniões em apenas uma sala de reunião, que é a do meu escritório. Isso deve permitir que todos os colaboradores reservem a sala de forma organizada.
+
+O usuário deve conseguir reservar sala, escolher a data no calendário com o horário e os participantes. Os participantes poderão ser convidados pelo próprio sistema ou por um link compartilhado, onde o participante conseguirá confirmar seu convite. 
+A disponibilidade da sala pode ser vista em tempo real pelos usuários que podem criar reuniões.
+Para os usuários que não criarem conta no webapp e mesmo assim estiver presente na reunião, como por exemplo visitantes, eles só devem confirmar a presença e colocar seu nome. Caso ele não faça isso, o usuário que criou a reunião pode apenas colocar a quantidade de pessoas presentes na reunião.
+A capacidade máxima da sala é de 12 pessoas. A capacidade mínima para criar uma reunião deve ser de 3 pessoas. A sala também tem internet, uma TV Samsung e capacidade de videoconferência.
+Integrações com Google Calendar e Outlook são fundamentais.
+O sistema deve notificar o usuário sobre o horário da reunião nos minutos antes que o usuário escolher. Exemplo: 1h, 30min, 45min, 2h, 1h30.
+Qualquer usuário poderá cancelar sua presença na reunião. Assim como o usuário que criou a reunião pode cancelar sua presença ou cancelar a reunião inteira.
+O usuário deve conseguir ver suas reuniões passadas e a participar em uma aba. Exemplo: Minhas Reuniões
+O fluxo para reservar a sala deve ser assim: Nova Reunião > Disponibilidade (escolha de horários) > Confirmar reunião
+Para cancelamento: Minhas Reuniões > Detalhes da Reunião > Cancelar Reunião > confirmação (NOTIFICAÇÃO ENVIADA AOS PARTICIPANTES)
+
+O Admin deve ter um painel administrativo onde consiga ver os relatórios de uso, cancelar, criar reuniões, remover usuários de reuniões.
+
+Algumas ferramentas que o sistema deve usar Supabase, Next.js, Tailwind
+Deve conter microinterações, UI intuitiva e elegante
+Se baseie no design system dos MVPs dessa pasta: "C:\Users\Aprendiz TI\Documents\reunô\telas"
+Os FAVICONS estão em "C:\Users\Aprendiz TI\Documents\reunô\FAVICONS"

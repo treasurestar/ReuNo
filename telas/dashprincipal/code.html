@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MeetingFlow | Premium Room Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#000000",
+                        "accent": "#4F46E5",
+                        "background-light": "#F9FAFB",
+                        "card-bg": "#FFFFFF",
+                        "border-color": "#F3F4F6"
+                    },
+                    fontFamily: {
+                        "sans": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "0.75rem",
+                        "xl": "1rem",
+                        "2xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        @layer base {
+            body {
+                @apply font-sans bg-background-light text-[#111827] antialiased;
+            }
+        }
+        .glass-panel {
+            background: #ffffff;
+            border: 1px solid #F3F4F6;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 5px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #E5E7EB;
+            border-radius: 10px;
+        }
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: 80px repeat(1, 1fr);
+        }
+    </style>
+</head>
+<body class="overflow-hidden">
+<div class="flex h-screen w-full overflow-hidden">
+<aside class="w-72 border-r border-gray-100 bg-white flex flex-col justify-between p-8 shrink-0">
+<div class="flex flex-col gap-10">
+<div class="flex items-center gap-3 px-2">
+<div class="bg-black size-9 rounded-xl flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-xl">corporate_fare</span>
+</div>
+<h1 class="text-xl font-bold tracking-tight text-gray-900">MeetingFlow</h1>
+</div>
+<nav class="flex flex-col gap-2">
+<p class="px-3 text-[11px] font-bold uppercase tracking-widest text-gray-400 mb-2">Main Menu</p>
+<div class="flex items-center gap-3 px-4 py-3 rounded-xl bg-gray-50 text-black font-semibold">
+<span class="material-symbols-outlined text-[22px]">grid_view</span>
+<span class="text-sm">Dashboard</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-gray-50 hover:text-black transition-all cursor-pointer">
+<span class="material-symbols-outlined text-[22px]">calendar_today</span>
+<span class="text-sm">Scheduler</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-gray-50 hover:text-black transition-all cursor-pointer">
+<span class="material-symbols-outlined text-[22px]">meeting_room</span>
+<span class="text-sm">Meeting Rooms</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-gray-50 hover:text-black transition-all cursor-pointer">
+<span class="material-symbols-outlined text-[22px]">insights</span>
+<span class="text-sm">Analytics</span>
+</div>
+<div class="mt-8 pt-8 border-t border-gray-100">
+<p class="px-3 text-[11px] font-bold uppercase tracking-widest text-gray-400 mb-2">Settings</p>
+<div class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-gray-50 hover:text-black transition-all cursor-pointer">
+<span class="material-symbols-outlined text-[22px]">settings</span>
+<span class="text-sm">Workspace Settings</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-gray-50 hover:text-black transition-all cursor-pointer">
+<span class="material-symbols-outlined text-[22px]">help</span>
+<span class="text-sm">Support Center</span>
+</div>
+</div>
+</nav>
+</div>
+<div class="bg-gray-50 rounded-2xl p-5 flex flex-col gap-4">
+<div class="flex items-center gap-3">
+<div class="size-11 rounded-full bg-cover bg-center border-2 border-white shadow-sm" data-alt="User profile avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAxdHfsT2seoyhXegX2OW5ij_hg_YIxgdkeo-lVRco6qRRRzesDfEGFS3vH8Ce3XBVFBdIiJHLy112SIxHaDYNRuP3lYHSXlYjH89jqS31Trz63IXlcJFlXq3I-gMwhnwWFOF0oIry7VFlQAzZfI3NgVi3zzTHSJeyLiolzP5by5ysPeR1gU32RLXIOJk2ul7IWT9G2Z4t5_rDe0AYBjCVtarmbvgCWfKhcUYd1B8_LVy_gwpdyGkePcrk4AHwhlduur-V_4-oQea4')"></div>
+<div class="flex flex-col overflow-hidden">
+<p class="text-sm font-bold text-gray-900 truncate">Alex Sterling</p>
+<p class="text-[11px] text-gray-500 font-medium">Head of Operations</p>
+</div>
+</div>
+<button class="w-full flex items-center justify-center gap-2 py-2.5 text-xs font-bold text-gray-600 bg-white border border-gray-200 rounded-xl hover:bg-red-50 hover:text-red-600 hover:border-red-100 transition-all">
+<span class="material-symbols-outlined text-sm">logout</span>
+                Sign out
+            </button>
+</div>
+</aside>
+<main class="flex-1 flex flex-col overflow-hidden">
+<header class="h-24 flex items-center justify-between px-12 bg-white border-b border-gray-100">
+<div class="flex flex-col">
+<div class="flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">
+<span>Global HQ</span>
+<span class="text-gray-200">/</span>
+<span>Suite 402</span>
+</div>
+<h2 class="text-2xl font-extrabold text-gray-900 tracking-tight">Boardroom Alpha</h2>
+</div>
+<div class="flex items-center gap-8">
+<div class="hidden lg:flex items-center gap-4 bg-gray-50 px-4 py-2 rounded-full border border-gray-100">
+<div class="flex -space-x-2">
+<div class="size-8 rounded-full border-2 border-white bg-cover" data-alt="Participant 1" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCQLuMSiwiNB3cTJojb5JHDTSd4gO4WbNDeZ7iqf0AtftSZnVQMox1sbrQPM5zYZTv1bWqR9FpoAGrz1u6pJt9nN_5kk-mPWJKV2wJFNZMpVnsHa2hndUzah8GLJv27cSHzaxJa-yzppJzbLKbQbxlsyqyt-HkRXoShI9N9mQg7eWUj_Zfjr9RZa4gJUBbSLPfqQSyrX9puLhbqZT4pjTNAuSfPuNUUWIHDb4y1vvn8XFi5qiqIUBR4b4ETrG5VFOs2zWteLXXJ0II')"></div>
+<div class="size-8 rounded-full border-2 border-white bg-cover" data-alt="Participant 2" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDgJZ_pKsN9Rzwnn4qxdpsIFuk3ZuSx0tST6Gw0l1fTQ5aaJvp7XcoVgAqssU8cUfhhkMQzMzm59ZqW6pNFp0cZcj1g90M4dZ3usI3MxKoHEPvqYfwkmKwsPaa4fQNHVc2SDnRoJQpHq2Bcj95Y7T6EtjrsQtQwIc-L2WZwck_PCCf1fx6Y9MoNAb7pNfifibDS0tV1o3E6PDZMcjMET1-l8YlvlIzW0Kcla9NG2qgIPJKYrXNSEordSgMg9kO0yxY7QXuF-KS4kro')"></div>
+<div class="size-8 rounded-full border-2 border-white bg-cover" data-alt="Participant 3" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC_SQHH-wdUGiKdfSzY71iRNxLP2Z8apYX9kxrnsSd7qb6eHMwk8pxaYMvLvgvdpwtZ2V7hDWmS7VN8Lp7SMC2OzNe1sf9J-wgTZv49iqcqL_bhWDIRgyEJi0RxcrAXst114CKA58TzN8ohsugDX2uUsh_49x6j2HzAt9Qz53VugyywPxnWgpK-ns0R6_wK5YA6jjlMJVXORqiVvHtVxpNkJy6p6SSzKKVSrgJCfx_hD8M6RfnUzF8gQ9KMkGjERaVqTH-IaaQVJuQ')"></div>
+<div class="size-8 rounded-full border-2 border-white bg-gray-200 flex items-center justify-center text-[10px] text-gray-600 font-bold">+4</div>
+</div>
+<span class="text-xs font-bold text-gray-600">Active Room</span>
+</div>
+<div class="flex items-center gap-3">
+<button class="size-11 flex items-center justify-center rounded-xl border border-gray-200 text-gray-500 hover:bg-gray-50 transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="size-11 flex items-center justify-center rounded-xl bg-black text-white hover:bg-gray-800 transition-colors">
+<span class="material-symbols-outlined">add</span>
+</button>
+</div>
+</div>
+</header>
+<div class="flex-1 overflow-y-auto p-12 flex flex-col gap-12 custom-scrollbar bg-white">
+<div class="grid grid-cols-12 gap-8">
+<div class="col-span-8 flex flex-col">
+<div class="mb-6 flex items-center gap-3">
+<span class="flex h-2.5 w-2.5 rounded-full bg-emerald-500"></span>
+<span class="text-xs font-bold uppercase tracking-widest text-emerald-600">Available Now</span>
+<span class="text-gray-300">•</span>
+<span class="text-xs font-medium text-gray-500">Next meeting in 1h 45m</span>
+</div>
+<h3 class="text-6xl font-extrabold text-gray-900 tracking-tight leading-[1.1] mb-8 max-w-2xl">
+                        Seamless space for your <span class="text-gray-400">greatest ideas.</span>
+</h3>
+<div class="flex items-center gap-4">
+<button class="bg-black text-white px-10 py-5 rounded-2xl font-bold flex items-center gap-3 hover:scale-[1.02] active:scale-[0.98] transition-all shadow-xl shadow-black/10">
+<span class="material-symbols-outlined">bolt</span>
+                            Quick Book Room
+                        </button>
+<button class="bg-white border-2 border-gray-100 text-gray-900 px-10 py-5 rounded-2xl font-bold hover:bg-gray-50 transition-all">
+                            View Full Schedule
+                        </button>
+</div>
+</div>
+<div class="col-span-4 flex flex-col gap-6">
+<div class="glass-panel rounded-3xl p-8 flex flex-col justify-between h-full group hover:border-gray-300 transition-colors cursor-default">
+<div>
+<p class="text-gray-400 text-xs font-bold uppercase tracking-widest mb-6">Daily Utilization</p>
+<div class="flex items-baseline gap-2">
+<span class="text-5xl font-extrabold text-gray-900 tracking-tighter">68%</span>
+<span class="text-emerald-500 text-sm font-bold flex items-center bg-emerald-50 px-2 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+                                    +12%
+                                </span>
+</div>
+</div>
+<div class="w-full h-2.5 bg-gray-100 rounded-full mt-8 overflow-hidden">
+<div class="h-full bg-black group-hover:bg-accent transition-colors" style="width: 68%"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-12 gap-12">
+<div class="col-span-8">
+<div class="flex items-center justify-between mb-8">
+<h4 class="text-2xl font-bold text-gray-900">Today's Schedule</h4>
+<div class="flex items-center gap-3 px-5 py-2.5 rounded-xl border border-gray-100 bg-gray-50/50 text-sm font-bold text-gray-600">
+<span class="material-symbols-outlined text-lg">calendar_today</span>
+                            October 23, 2023
+                        </div>
+</div>
+<div class="space-y-1">
+<div class="relative flex gap-8 p-8 rounded-3xl hover:bg-gray-50 transition-all group opacity-50 hover:opacity-100">
+<div class="flex flex-col items-end shrink-0 w-20">
+<span class="text-sm font-bold text-gray-400">09:00</span>
+<span class="text-[10px] font-bold text-gray-300 mt-1 uppercase">AM</span>
+</div>
+<div class="w-px bg-gray-100 relative">
+<div class="absolute top-2 -left-[4.5px] size-2.5 rounded-full bg-gray-200 border-2 border-white"></div>
+</div>
+<div class="flex-1 pb-4">
+<div class="flex items-center justify-between mb-2">
+<h5 class="font-bold text-lg text-gray-900">Marketing Brand Sync</h5>
+<span class="px-3 py-1 rounded-full bg-gray-100 text-gray-500 text-[10px] font-bold uppercase tracking-wider">Finished</span>
+</div>
+<p class="text-sm text-gray-500">Sarah Jenkins • 60 min session</p>
+</div>
+</div>
+<div class="relative flex gap-8 p-8 rounded-3xl bg-[#F0F2FF] border border-[#E0E4FF]">
+<div class="flex flex-col items-end shrink-0 w-20">
+<span class="text-sm font-extrabold text-accent">11:30</span>
+<span class="text-[10px] font-bold text-accent/60 mt-1 uppercase">AM</span>
+</div>
+<div class="w-px bg-accent/20 relative">
+<div class="absolute top-2 -left-[4.5px] size-2.5 rounded-full bg-accent border-2 border-white"></div>
+</div>
+<div class="flex-1">
+<div class="flex items-center justify-between mb-2">
+<h5 class="font-bold text-xl text-gray-900">Product Roadmap Review</h5>
+<span class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent text-white text-[10px] font-bold uppercase tracking-wider">
+<span class="size-1.5 rounded-full bg-white animate-pulse"></span>
+                                        Live Now
+                                    </span>
+</div>
+<div class="flex items-center gap-6 mt-3">
+<div class="flex items-center gap-2 text-sm text-gray-600 font-medium">
+<span class="material-symbols-outlined text-lg text-accent">person</span>
+                                        David Chen
+                                    </div>
+<div class="flex items-center gap-2 text-sm text-gray-600 font-medium">
+<span class="material-symbols-outlined text-lg text-accent">groups</span>
+                                        8 Attendees
+                                    </div>
+</div>
+</div>
+</div>
+<div class="relative flex gap-8 p-8 rounded-3xl hover:bg-gray-50 transition-all group">
+<div class="flex flex-col items-end shrink-0 w-20">
+<span class="text-sm font-bold text-gray-600">14:00</span>
+<span class="text-[10px] font-bold text-gray-400 mt-1 uppercase">PM</span>
+</div>
+<div class="w-px bg-gray-100 relative">
+<div class="absolute top-2 -left-[4.5px] size-2.5 rounded-full bg-gray-300 border-2 border-white group-hover:bg-black transition-colors"></div>
+</div>
+<div class="flex-1">
+<div class="flex items-center justify-between mb-2">
+<h5 class="font-bold text-lg text-gray-900">Financial Audit Q4</h5>
+<span class="px-3 py-1 rounded-full border border-gray-200 text-gray-400 text-[10px] font-bold uppercase tracking-wider">Scheduled</span>
+</div>
+<p class="text-sm text-gray-500">Michael Ross • Private Session</p>
+</div>
+</div>
+</div>
+</div>
+<div class="col-span-4 flex flex-col gap-10">
+<div>
+<h4 class="text-sm font-bold text-gray-400 uppercase tracking-widest mb-6">Room Amenities</h4>
+<div class="grid grid-cols-2 gap-4">
+<div class="p-6 rounded-2xl glass-panel flex flex-col gap-4 hover:border-gray-300 transition-all group">
+<span class="material-symbols-outlined text-gray-400 group-hover:text-black transition-colors">tv</span>
+<span class="text-xs font-bold text-gray-700">85" 4K Display</span>
+</div>
+<div class="p-6 rounded-2xl glass-panel flex flex-col gap-4 hover:border-gray-300 transition-all group">
+<span class="material-symbols-outlined text-gray-400 group-hover:text-black transition-colors">groups</span>
+<span class="text-xs font-bold text-gray-700">12 Seater</span>
+</div>
+<div class="p-6 rounded-2xl glass-panel flex flex-col gap-4 hover:border-gray-300 transition-all group">
+<span class="material-symbols-outlined text-gray-400 group-hover:text-black transition-colors">videocam</span>
+<span class="text-xs font-bold text-gray-700">Cisco Webex</span>
+</div>
+<div class="p-6 rounded-2xl glass-panel flex flex-col gap-4 hover:border-gray-300 transition-all group">
+<span class="material-symbols-outlined text-gray-400 group-hover:text-black transition-colors">wifi</span>
+<span class="text-xs font-bold text-gray-700">Ultra-fast Wi-Fi</span>
+</div>
+</div>
+</div>
+<div class="glass-panel rounded-[32px] p-8 bg-gray-50/30">
+<h4 class="text-lg font-bold text-gray-900 mb-6">Upcoming Next Week</h4>
+<div class="space-y-6">
+<div class="flex items-center gap-5">
+<div class="size-12 rounded-2xl bg-white border border-gray-100 flex flex-col items-center justify-center shadow-sm">
+<span class="text-[10px] font-bold text-gray-400 uppercase">Mon</span>
+<span class="text-sm font-bold text-gray-900">26</span>
+</div>
+<div class="flex flex-col">
+<p class="text-sm font-bold text-gray-900">Executive Board Meeting</p>
+<p class="text-[11px] text-gray-500 font-medium">10:00 AM — 4 hours</p>
+</div>
+</div>
+<div class="flex items-center gap-5">
+<div class="size-12 rounded-2xl bg-white border border-gray-100 flex flex-col items-center justify-center shadow-sm">
+<span class="text-[10px] font-bold text-gray-400 uppercase">Wed</span>
+<span class="text-sm font-bold text-gray-900">28</span>
+</div>
+<div class="flex flex-col">
+<p class="text-sm font-bold text-gray-900">Design Critique Sync</p>
+<p class="text-[11px] text-gray-500 font-medium">02:30 PM — 1.5 hours</p>
+</div>
+</div>
+</div>
+<button class="w-full mt-8 py-3.5 rounded-2xl border border-gray-200 bg-white text-gray-900 text-sm font-bold hover:bg-gray-50 transition-all">
+                            Open Calendar View
+                        </button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+
+</body></html>

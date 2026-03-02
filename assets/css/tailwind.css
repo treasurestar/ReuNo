@@ -1,0 +1,149 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================
+   SISTEMA DE TEMAS - Reunô
+   Baseado na paleta zinc/shadcn do grupo
+   ============================================ */
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html.dark {
+    color-scheme: dark;
+  }
+
+  body {
+    @apply bg-[#F8FAFC] text-[#1E293B] antialiased;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  html.dark body {
+    @apply bg-dark-bg text-[#fafafa];
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-slate-300 rounded;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-slate-400;
+  }
+
+  html.dark ::-webkit-scrollbar-thumb {
+    background: #3f3f46;
+  }
+
+  html.dark ::-webkit-scrollbar-thumb:hover {
+    background: #52525b;
+  }
+
+  * {
+    scrollbar-width: thin;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-white/70 backdrop-blur-2xl border border-white/40 shadow-soft transition-all duration-300;
+  }
+  html.dark .glass-card {
+    @apply bg-dark-card/90 backdrop-blur-2xl border-dark-border shadow-dark-sm;
+  }
+
+  .glass-panel {
+    @apply bg-white border border-[#E2E8F0] shadow-panel transition-all duration-300;
+  }
+  html.dark .glass-panel {
+    @apply bg-dark-card border-dark-border shadow-dark-sm;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-widest;
+  }
+
+  .input-soft {
+    @apply w-full rounded-xl border border-[#CBD5E1] bg-[#FEFEFF] px-4 py-3 text-sm text-[#1E293B] placeholder:text-[#94A3B8] focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all duration-300;
+  }
+  html.dark .input-soft {
+    @apply border-dark-border bg-dark-bg text-[#fafafa] placeholder:text-[#71717a] focus:border-[#fafafa] focus:ring-[#fafafa]/20;
+  }
+
+  .button-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-[#1E293B] px-5 py-3 text-sm font-bold text-white shadow-soft transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#0F172A] hover:shadow-panel active:translate-y-0;
+  }
+  html.dark .button-primary {
+    @apply bg-[#fafafa] text-[#18181b] shadow-dark-sm hover:bg-[#e4e4e7] hover:shadow-dark-md hover:text-[#09090b];
+  }
+
+  .button-outline {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-[#CBD5E1] bg-[#FEFEFF] px-5 py-3 text-sm font-bold text-[#1E293B] transition-all duration-300 hover:bg-[#F1F5F9];
+  }
+  html.dark .button-outline {
+    @apply border-[#3f3f46] bg-dark-card text-[#fafafa] hover:bg-dark-hover;
+  }
+
+  .card {
+    @apply rounded-3xl border border-[#E2E8F0] bg-[#FEFEFF] shadow-soft transition-all duration-300;
+  }
+  html.dark .card {
+    @apply border-dark-border bg-dark-card shadow-none;
+  }
+
+  .stagger > * {
+    @apply animate-slideUp;
+  }
+
+  .stagger > *:nth-child(1) { animation-delay: 0.04s; }
+  .stagger > *:nth-child(2) { animation-delay: 0.08s; }
+  .stagger > *:nth-child(3) { animation-delay: 0.12s; }
+  .stagger > *:nth-child(4) { animation-delay: 0.16s; }
+  .stagger > *:nth-child(5) { animation-delay: 0.2s; }
+  .stagger > *:nth-child(6) { animation-delay: 0.24s; }
+  .stagger > *:nth-child(7) { animation-delay: 0.28s; }
+  .stagger > *:nth-child(8) { animation-delay: 0.32s; }
+}
+
+/* ============================================
+   TRANSIÇÕES DE PÁGINA
+   ============================================ */
+
+.page-enter-active,
+.page-leave-active {
+  transition: opacity 250ms ease, transform 250ms ease;
+}
+
+.page-enter-from {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+.page-leave-to {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+
+/* Layout transitions (ex: login ↔ dashboard) */
+.layout-enter-active,
+.layout-leave-active {
+  transition: opacity 300ms ease;
+}
+
+.layout-enter-from,
+.layout-leave-to {
+  opacity: 0;
+}
