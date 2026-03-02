@@ -108,6 +108,7 @@
 <script setup lang="ts">
 definePageMeta({ layout: 'auth' })
 
+const route = useRoute()
 const supabase = useSupabase()
 const { revalidate, isAdmin, bootstrapAdmin } = useAuth()
 const email = ref('')
@@ -159,7 +160,8 @@ const handleSignIn = async () => {
     await revalidate()
     await bootstrapAdmin()
     await revalidate()
-    navigateTo(isAdmin.value ? '/admin' : '/')
+    const returnTo = route.query.returnTo as string
+    navigateTo(returnTo || (isAdmin.value ? '/admin' : '/'))
   } catch (e) {
     console.warn('[login] Erro pós-login:', e)
     errorMsg.value = 'Erro ao finalizar o login. Tente novamente.'

@@ -19,7 +19,7 @@ export const useMeetings = () => {
   const fetchByDate = async (date: string) => {
     const { data, error } = await supabase
       .from('meetings')
-      .select('*, creator:profiles!created_by(*), meeting_participants(*)')
+      .select('*, creator:profiles!created_by(*), meeting_participants(*, profile:profiles!user_id(*))')
       .eq('date', date)
       .neq('status', 'cancelled')
       .order('start_time')
@@ -254,7 +254,7 @@ export const useMeetings = () => {
   const fetchAllMeetings = async (filters?: { status?: string; dateFrom?: string; dateTo?: string }) => {
     let query = supabase
       .from('meetings')
-      .select('*, creator:profiles!created_by(*), meeting_participants(*)')
+      .select('*, creator:profiles!created_by(*), meeting_participants(*, profile:profiles!user_id(*))')
       .order('date', { ascending: false })
       .order('start_time', { ascending: false })
       .limit(100)

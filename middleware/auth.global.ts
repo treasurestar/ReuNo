@@ -21,6 +21,10 @@ export default defineNuxtRouteMiddleware(async (to) => {
   // A5: /confirmar-email não redireciona (usuário recém-registrado precisa ver a página)
   if (isPublic && user.value) {
     if (to.path === '/login' || to.path === '/registro') {
+      const returnTo = to.query.returnTo as string
+      if (returnTo) {
+        return navigateTo(returnTo)
+      }
       await ensureProfile()
       return navigateTo(isAdmin.value ? '/admin' : '/')
     }

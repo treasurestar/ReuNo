@@ -52,40 +52,6 @@
               {{ errorMsg }}
             </div>
             <div v-else class="space-y-5">
-              <div>
-                <label class="text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-[#a1a1aa]">Horário inicial</label>
-                <div class="mt-2 rounded-2xl border border-slate-100 bg-slate-50 p-4 transition-all hover:border-slate-200 dark:border-dark-border dark:bg-dark-card dark:hover:border-slate-700">
-                  <div class="flex flex-wrap gap-2">
-                    <span class="chip bg-primary/10 text-primary border border-primary/30 transition-all">Selecionar</span>
-                  </div>
-                  <div class="mt-4 grid gap-3 sm:grid-cols-2">
-                    <div>
-                      <select
-                        v-model="startHour"
-                        class="input-soft transition-all focus:border-primary/50 focus:ring-2 focus:ring-primary/20"
-                        :class="startHour ? 'border-primary/30 ring-2 ring-primary/10' : ''"
-                      >
-                        <option value="" disabled>Hora</option>
-                        <option v-for="h in hoursOptions" :key="h" :value="h">{{ h }}</option>
-                      </select>
-                    </div>
-                    <div>
-                      <select
-                        v-model="startMinute"
-                        class="input-soft transition-all focus:border-primary/50 focus:ring-2 focus:ring-primary/20"
-                        :class="startMinute ? 'border-primary/30 ring-2 ring-primary/10' : ''"
-                      >
-                        <option value="" disabled>Minuto</option>
-                        <option v-for="m in minutesOptions" :key="m" :value="m">{{ m }}</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                <p class="mt-2 text-xs text-slate-500 dark:text-[#a1a1aa]">
-                  A duração é {{ booking.duration }}min. O fim será em {{ booking.endTime || '--:--' }}.
-                </p>
-              </div>
-
               <div class="rounded-2xl border p-4 text-sm" :class="availabilityClass">
                 <div class="flex items-center gap-2">
                   <span class="material-symbols-outlined">{{ availabilityIcon }}</span>
@@ -268,39 +234,12 @@ const formatTime = (t: string) => t?.slice(0, 5) ?? ''
 
 const normalizeTime = (t: string) => t?.slice(0, 5) ?? ''
 
-const hoursOptions = computed(() => Array.from({ length: 24 }, (_, i) => String(i).padStart(2, '0')))
-const minutesOptions = computed(() => Array.from({ length: 60 }, (_, i) => String(i).padStart(2, '0')))
-const startHour = ref('')
-const startMinute = ref('')
-
 const updateEndTime = () => {
   if (!booking.value.startTime) {
     booking.value.endTime = ''
     return
   }
   booking.value.endTime = calcEndTime(booking.value.startTime, booking.value.duration)
-}
-
-const syncTimeFromBooking = () => {
-  if (!booking.value.startTime) {
-    startHour.value = ''
-    startMinute.value = ''
-    return
-  }
-  const [h, m] = booking.value.startTime.split(':')
-  if (startHour.value !== h) startHour.value = h
-  if (startMinute.value !== m) startMinute.value = m
-}
-
-const updateStartTime = () => {
-  if (!startHour.value || !startMinute.value) {
-    booking.value.startTime = ''
-    booking.value.endTime = ''
-    return
-  }
-  const next = `${startHour.value}:${startMinute.value}`
-  if (booking.value.startTime !== next) booking.value.startTime = next
-  updateEndTime()
 }
 
 const isTimeValid = computed(() => {
@@ -427,14 +366,6 @@ watch([() => booking.value.startTime, () => booking.value.duration], () => {
   updateEndTime()
 })
 
-watch([startHour, startMinute], () => {
-  updateStartTime()
-})
-
-watch(() => booking.value.startTime, () => {
-  syncTimeFromBooking()
-})
-
 watch(viewMode, async (mode) => {
   if (mode === 'week') {
     loadingSlots.value = true
@@ -450,7 +381,6 @@ onMounted(async () => {
   await fetchConfig()
   step.value = 2
   if (!booking.value.date) booking.value.date = new Date().toLocaleDateString('en-CA')
-  syncTimeFromBooking()
   updateEndTime()
   await loadMeetings()
 
