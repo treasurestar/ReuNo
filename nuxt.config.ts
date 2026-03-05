@@ -40,11 +40,12 @@ export default defineNuxtConfig({
   runtimeConfig: {
     supabaseServiceRoleKey: process.env.SUPABASE_SERVICE_ROLE_KEY ?? "",
     adminEmails: process.env.ADMIN_EMAILS ?? "",
-    googleClientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
+    microsoftClientSecret: process.env.MICROSOFT_CLIENT_SECRET ?? "",
+    microsoftTenantId: process.env.MICROSOFT_TENANT_ID ?? "common",
     public: {
       supabaseUrl: process.env.SUPABASE_URL ?? "",
       supabaseAnonKey: process.env.SUPABASE_ANON_KEY ?? "",
-      googleClientId: process.env.GOOGLE_CLIENT_ID ?? "",
+      microsoftClientId: process.env.MICROSOFT_CLIENT_ID ?? "",
     },
   },
 });

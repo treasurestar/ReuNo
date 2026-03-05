@@ -12,41 +12,42 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, statusMessage: 'Missing code or redirectUri' })
   }
 
-  const google = getGoogleConfig()
+  const ms = getMicrosoftConfig()
 
-  // Trocar authorization code por tokens
   const tokenResponse = await $fetch<{
     access_token: string
     refresh_token?: string
     expires_in: number
     token_type: string
     scope: string
-  }>('https://oauth2.googleapis.com/token', {
+  }>(`https://login.microsoftonline.com/${ms.tenantId}/oauth2/v2.0/token`, {
     method: 'POST',
-    body: {
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      client_id: ms.clientId,
+      client_secret: ms.clientSecret,
       code: body.code,
-      client_id: google.clientId,
-      client_secret: google.clientSecret,
       redirect_uri: body.redirectUri,
       grant_type: 'authorization_code',
-    },
+      scope: 'offline_access Calendars.ReadWrite',
+    }).toString(),
   })
 
   if (!tokenResponse.access_token) {
-    throw createError({ statusCode: 502, statusMessage: 'Google token exchange failed' })
+    throw createError({ statusCode: 502, statusMessage: 'Microsoft token exchange failed' })
   }
 
   if (!tokenResponse.refresh_token) {
     throw createError({
       statusCode: 400,
-      statusMessage: 'No refresh token received. Revogue o acesso em myaccount.google.com e tente novamente.',
+      statusMessage: 'No refresh token received. Verifique as permissões do app no Azure.',
     })
   }
 
   const expiresAt = new Date(Date.now() + tokenResponse.expires_in * 1000).toISOString()
 
   const { error: upsertError } = await supabase
-    .from('google_calendar_tokens')
+    .from('outlook_calendar_tokens')
     .upsert({
       user_id: user.id,
       access_token: tokenResponse.access_token,

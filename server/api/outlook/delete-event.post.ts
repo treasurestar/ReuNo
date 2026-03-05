@@ -7,31 +7,28 @@ export default defineEventHandler(async (event) => {
 
   const { user, supabase } = await requireUser(bearerToken)
 
-  const body = await readBody<{ googleEventId: string }>(event)
-  if (!body?.googleEventId) {
-    throw createError({ statusCode: 400, statusMessage: 'Missing googleEventId' })
+  const body = await readBody<{ outlookEventId: string }>(event)
+  if (!body?.outlookEventId) {
+    throw createError({ statusCode: 400, statusMessage: 'Missing outlookEventId' })
   }
 
-  // Obter access_token válido
   let accessToken: string
   try {
-    accessToken = await ensureValidToken(supabase, user.id)
+    accessToken = await ensureValidMicrosoftToken(supabase, user.id)
   } catch {
-    // Não conectado — nada a fazer
     return { deleted: false, reason: 'not_connected' }
   }
 
-  // Deletar evento do Google Calendar (non-fatal)
   try {
     await $fetch(
-      `https://www.googleapis.com/calendar/v3/calendars/primary/events/${body.googleEventId}`,
+      `https://graph.microsoft.com/v1.0/me/events/${body.outlookEventId}`,
       {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${accessToken}` },
       },
     )
   } catch {
-    // Evento pode já ter sido deletado — não é erro fatal
+    // Evento pode já ter sido deletado
   }
 
   return { deleted: true }

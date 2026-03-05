@@ -66,9 +66,7 @@ export interface Meeting {
   created_by: string
   cancelled_by: string | null
   cancelled_at: string | null
-  sync_google: boolean
   sync_outlook: boolean
-  google_event_id: string | null
   outlook_event_id: string | null
   invite_token?: string
   created_at: string
@@ -92,7 +90,7 @@ export interface MeetingParticipant {
   profile?: Profile
 }
 
-export interface GoogleCalendarToken {
+export interface OutlookCalendarToken {
   user_id: string
   access_token: string
   refresh_token: string

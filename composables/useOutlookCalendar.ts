@@ -1,15 +1,15 @@
-export const useGoogleCalendar = () => {
-  const connected = useState<boolean>('gcal-connected', () => false)
-  const loading = useState<boolean>('gcal-loading', () => false)
-  const error = useState<string | null>('gcal-error', () => null)
+export const useOutlookCalendar = () => {
+  const connected = useState<boolean>('outlook-connected', () => false)
+  const loading = useState<boolean>('outlook-loading', () => false)
+  const error = useState<string | null>('outlook-error', () => null)
 
   const config = useRuntimeConfig()
   const supabase = useSupabase()
 
-  /** Verifica se o usuário tem Google Calendar conectado */
+  /** Verifica se o usuário tem Outlook Calendar conectado */
   const checkConnection = async () => {
     const { data } = await supabase
-      .from('google_calendar_tokens')
+      .from('outlook_calendar_tokens')
       .select('user_id')
       .maybeSingle()
 
@@ -17,26 +17,26 @@ export const useGoogleCalendar = () => {
     return connected.value
   }
 
-  /** Inicia o fluxo OAuth — redireciona para Google */
+  /** Inicia o fluxo OAuth — redireciona para Microsoft */
   const connect = () => {
-    const clientId = config.public.googleClientId
+    const clientId = config.public.microsoftClientId
     if (!clientId) {
-      error.value = 'Google Client ID não configurado'
+      error.value = 'Microsoft Client ID não configurado'
       return
     }
 
-    const redirectUri = `${window.location.origin}/auth/google/callback`
+    const redirectUri = `${window.location.origin}/auth/outlook/callback`
     const params = new URLSearchParams({
       client_id: clientId,
       redirect_uri: redirectUri,
       response_type: 'code',
-      scope: 'https://www.googleapis.com/auth/calendar.events',
-      access_type: 'offline',
+      scope: 'offline_access Calendars.ReadWrite',
+      response_mode: 'query',
       prompt: 'consent',
     })
 
-    sessionStorage.setItem('gcal-return-to', window.location.pathname)
-    window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`
+    sessionStorage.setItem('outlook-return-to', window.location.pathname)
+    window.location.href = `https://login.microsoftonline.com/common/oauth2/v2.0/authorize?${params.toString()}`
   }
 
   /** Troca o authorization code por tokens (chamado pelo callback) */
@@ -52,9 +52,9 @@ export const useGoogleCalendar = () => {
         return false
       }
 
-      const redirectUri = `${window.location.origin}/auth/google/callback`
+      const redirectUri = `${window.location.origin}/auth/outlook/callback`
 
-      await $fetch('/api/google/exchange-token', {
+      await $fetch('/api/outlook/exchange-token', {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
         body: { code, redirectUri },
@@ -63,14 +63,14 @@ export const useGoogleCalendar = () => {
       connected.value = true
       return true
     } catch (e: any) {
-      error.value = e?.data?.statusMessage || e?.message || 'Falha ao conectar Google Calendar'
+      error.value = e?.data?.statusMessage || e?.message || 'Falha ao conectar Outlook Calendar'
       return false
     } finally {
       loading.value = false
     }
   }
 
-  /** Desconecta Google Calendar */
+  /** Desconecta Outlook Calendar */
   const disconnect = async () => {
     loading.value = true
     error.value = null
@@ -80,7 +80,7 @@ export const useGoogleCalendar = () => {
       const token = sessionData.session?.access_token
       if (!token) return
 
-      await $fetch('/api/google/disconnect', {
+      await $fetch('/api/outlook/disconnect', {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
       })
@@ -93,7 +93,7 @@ export const useGoogleCalendar = () => {
     }
   }
 
-  /** Cria evento no Google Calendar (non-fatal) */
+  /** Cria evento no Outlook Calendar (non-fatal) */
   const createEvent = async (meeting: {
     meetingId: string
     title: string
@@ -101,7 +101,7 @@ export const useGoogleCalendar = () => {
     date: string
     startTime: string
     endTime: string
-  }): Promise<{ eventId: string; htmlLink: string } | null> => {
+  }): Promise<{ eventId: string; webLink: string } | null> => {
     if (!connected.value) return null
 
     try {
@@ -109,8 +109,8 @@ export const useGoogleCalendar = () => {
       const token = sessionData.session?.access_token
       if (!token) return null
 
-      return await $fetch<{ eventId: string; htmlLink: string }>(
-        '/api/google/create-event',
+      return await $fetch<{ eventId: string; webLink: string }>(
+        '/api/outlook/create-event',
         {
           method: 'POST',
           headers: { Authorization: `Bearer ${token}` },
@@ -118,27 +118,27 @@ export const useGoogleCalendar = () => {
         },
       )
     } catch (e: any) {
-      console.warn('[gcal] Falha ao criar evento:', e?.message)
+      console.warn('[outlook] Falha ao criar evento:', e?.message)
       return null
     }
   }
 
-  /** Deleta evento do Google Calendar (non-fatal) */
-  const deleteEvent = async (googleEventId: string) => {
-    if (!connected.value || !googleEventId) return
+  /** Deleta evento do Outlook Calendar (non-fatal) */
+  const deleteEvent = async (outlookEventId: string) => {
+    if (!connected.value || !outlookEventId) return
 
     try {
       const { data: sessionData } = await supabase.auth.getSession()
       const token = sessionData.session?.access_token
       if (!token) return
 
-      await $fetch('/api/google/delete-event', {
+      await $fetch('/api/outlook/delete-event', {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
-        body: { googleEventId },
+        body: { outlookEventId },
       })
     } catch (e: any) {
-      console.warn('[gcal] Falha ao deletar evento:', e?.message)
+      console.warn('[outlook] Falha ao deletar evento:', e?.message)
     }
   }
 

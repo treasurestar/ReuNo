@@ -69,32 +69,23 @@
         <div class="mt-6 w-full">
           <p class="text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-[#71717a]">Adicionar à agenda</p>
           <div class="mt-3 flex flex-wrap items-center justify-center gap-3">
-            <template v-if="gcalSynced">
+            <template v-if="outlookSynced">
               <span class="inline-flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-5 py-3 text-sm font-bold text-emerald-700 dark:border-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300">
                 <span class="material-symbols-outlined text-base">check_circle</span>
-                Google Calendar sincronizado
+                Outlook Calendar sincronizado
               </span>
             </template>
             <template v-else>
               <a
-                :href="googleLink"
+                :href="outlookLink"
                 target="_blank"
                 rel="noopener"
                 class="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white/70 px-5 py-3 text-sm font-bold text-slate-700 transition-all hover:bg-white dark:border-dark-border dark:bg-dark-card dark:text-[#e4e4e7] dark:hover:bg-dark-hover"
               >
-                <svg class="h-4 w-4" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-                Google Calendar
+                <svg class="h-4 w-4" viewBox="0 0 23 23"><path d="M1 1h10v10H1z" fill="#f35325"/><path d="M12 1h10v10H12z" fill="#81bc06"/><path d="M1 12h10v10H1z" fill="#05a6f0"/><path d="M12 12h10v10H12z" fill="#ffba08"/></svg>
+                Outlook
               </a>
             </template>
-            <a
-              :href="outlookLink"
-              target="_blank"
-              rel="noopener"
-              class="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white/70 px-5 py-3 text-sm font-bold text-slate-700 transition-all hover:bg-white dark:border-dark-border dark:bg-dark-card dark:text-[#e4e4e7] dark:hover:bg-dark-hover"
-            >
-              <svg class="h-4 w-4" viewBox="0 0 23 23"><path d="M1 1h10v10H1z" fill="#f35325"/><path d="M12 1h10v10H12z" fill="#81bc06"/><path d="M1 12h10v10H1z" fill="#05a6f0"/><path d="M12 12h10v10H12z" fill="#ffba08"/></svg>
-              Outlook
-            </a>
           </div>
         </div>
 
@@ -212,9 +203,9 @@ const { config: roomConfig, fetch: fetchConfig } = useRoomConfig()
 const { profile } = useAuth()
 const meetingsApi = useMeetings()
 const supabase = useSupabase()
-const { googleCalendarUrl, outlookCalendarUrl } = useCalendarLinks()
-const { connected: gcalConnected, checkConnection: gcalCheckConnection, createEvent: gcalCreateEvent } = useGoogleCalendar()
-const gcalSynced = ref(false)
+const { outlookCalendarUrl } = useCalendarLinks()
+const { connected: outlookConnected, checkConnection: outlookCheckConnection, createEvent: outlookCreateEvent } = useOutlookCalendar()
+const outlookSynced = ref(false)
 
 const submitting = ref(false)
 const errorMsg = ref('')
@@ -230,7 +221,6 @@ const seriesResult = ref<{ created: Meeting[]; skipped: string[] } | null>(null)
 const skippedDatesPreview = ref<Set<string>>(new Set())
 const loadingPreview = ref(false)
 
-const googleLink = computed(() => googleCalendarUrl(createdMeeting.value))
 const outlookLink = computed(() => outlookCalendarUrl(createdMeeting.value))
 
 const formattedDate = computed(() => {
@@ -387,10 +377,10 @@ const confirmMeeting = async () => {
         }
       }
 
-      // Sync com Google Calendar se conectado
-      if (gcalConnected.value && createdMeetings.length) {
+      // Sync com Outlook Calendar se conectado
+      if (outlookConnected.value && createdMeetings.length) {
         for (const m of createdMeetings) {
-          await gcalCreateEvent({
+          await outlookCreateEvent({
             meetingId: m.id,
             title: m.title,
             description: m.description || '',
@@ -399,7 +389,7 @@ const confirmMeeting = async () => {
             endTime: m.end_time,
           })
         }
-        gcalSynced.value = true
+        outlookSynced.value = true
       }
 
       seriesResult.value = { created: createdMeetings, skipped }
@@ -452,9 +442,9 @@ const confirmMeeting = async () => {
       }
     }
 
-    // Sync com Google Calendar se conectado
-    if (gcalConnected.value) {
-      await gcalCreateEvent({
+    // Sync com Outlook Calendar se conectado
+    if (outlookConnected.value) {
+      await outlookCreateEvent({
         meetingId: meeting.id,
         title: booking.value.title,
         description: booking.value.description || '',
@@ -462,7 +452,7 @@ const confirmMeeting = async () => {
         startTime: booking.value.startTime,
         endTime: booking.value.endTime,
       })
-      gcalSynced.value = true
+      outlookSynced.value = true
     }
 
     meetingToken.value = meeting.invite_token ?? ''
@@ -504,7 +494,7 @@ const checkConflictsForPreview = async () => {
 
 onMounted(async () => {
   await fetchConfig()
-  gcalCheckConnection()
+  outlookCheckConnection()
   step.value = 3
   if (!booking.value.title) navigateTo('/agendar')
   await checkConflictsForPreview()

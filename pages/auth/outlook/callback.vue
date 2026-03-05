@@ -6,7 +6,7 @@
         progress_activity
       </span>
       <p class="mt-4 text-sm text-slate-500 dark:text-[#a1a1aa]">
-        Conectando Google Calendar...
+        Conectando Outlook Calendar...
       </p>
     </div>
 
@@ -29,7 +29,7 @@
     <div v-else class="card p-8">
       <span class="material-symbols-outlined text-5xl text-emerald-500">check_circle</span>
       <h2 class="mt-4 text-xl font-extrabold text-[#1E293B] dark:text-[#fafafa]">
-        Google Calendar conectado!
+        Outlook Calendar conectado!
       </h2>
       <p class="mt-2 text-sm text-slate-500 dark:text-[#a1a1aa]">
         Suas reuniões serão sincronizadas automaticamente.
@@ -46,7 +46,7 @@
 
 <script setup lang="ts">
 const route = useRoute()
-const { exchangeCode, error: gcalError } = useGoogleCalendar()
+const { exchangeCode, error: outlookError } = useOutlookCalendar()
 
 const processing = ref(true)
 const errorMsg = ref('')
@@ -56,13 +56,13 @@ onMounted(async () => {
   const code = route.query.code as string
   const queryError = route.query.error as string
 
-  returnTo.value = sessionStorage.getItem('gcal-return-to') || '/'
-  sessionStorage.removeItem('gcal-return-to')
+  returnTo.value = sessionStorage.getItem('outlook-return-to') || '/'
+  sessionStorage.removeItem('outlook-return-to')
 
   if (queryError) {
     errorMsg.value = queryError === 'access_denied'
       ? 'Acesso negado. Você cancelou a autorização.'
-      : `Erro do Google: ${queryError}`
+      : `Erro da Microsoft: ${queryError}`
     processing.value = false
     return
   }
@@ -75,7 +75,7 @@ onMounted(async () => {
 
   const success = await exchangeCode(code)
   if (!success) {
-    errorMsg.value = gcalError.value || 'Falha ao conectar Google Calendar.'
+    errorMsg.value = outlookError.value || 'Falha ao conectar Outlook Calendar.'
   }
 
   processing.value = false

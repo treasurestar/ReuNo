@@ -20,22 +20,26 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, statusMessage: 'Missing required fields' })
   }
 
-  // Obter access_token válido (com refresh automático)
-  const accessToken = await ensureValidToken(supabase, user.id)
+  const accessToken = await ensureValidMicrosoftToken(supabase, user.id)
 
-  // Criar evento no Google Calendar
   const timezone = 'America/Sao_Paulo'
   const startTime = body.startTime.length === 5 ? `${body.startTime}:00` : body.startTime
   const endTime = body.endTime.length === 5 ? `${body.endTime}:00` : body.endTime
 
-  const calendarEvent = await $fetch<{ id: string; htmlLink: string }>(
-    'https://www.googleapis.com/calendar/v3/calendars/primary/events',
+  const calendarEvent = await $fetch<{ id: string; webLink: string }>(
+    'https://graph.microsoft.com/v1.0/me/events',
     {
       method: 'POST',
-      headers: { Authorization: `Bearer ${accessToken}` },
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
       body: {
-        summary: body.title,
-        description: body.description || 'Reunião agendada via Reunô',
+        subject: body.title,
+        body: {
+          contentType: 'text',
+          content: body.description || 'Reunião agendada via Reunô',
+        },
         start: {
           dateTime: `${body.date}T${startTime}`,
           timeZone: timezone,
@@ -44,29 +48,23 @@ export default defineEventHandler(async (event) => {
           dateTime: `${body.date}T${endTime}`,
           timeZone: timezone,
         },
-        reminders: {
-          useDefault: false,
-          overrides: [
-            { method: 'popup', minutes: 10 },
-          ],
-        },
+        reminderMinutesBeforeStart: 10,
       },
     },
   )
 
-  // Atualizar meeting com google_event_id
   if (calendarEvent?.id) {
     await supabase
       .from('meetings')
       .update({
-        google_event_id: calendarEvent.id,
-        sync_google: true,
+        outlook_event_id: calendarEvent.id,
+        sync_outlook: true,
       })
       .eq('id', body.meetingId)
   }
 
   return {
     eventId: calendarEvent.id,
-    htmlLink: calendarEvent.htmlLink,
+    webLink: calendarEvent.webLink,
   }
 })
