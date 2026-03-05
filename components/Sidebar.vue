@@ -87,6 +87,7 @@
             </svg>
             {{ outlookLoading ? 'Conectando...' : 'Outlook Calendar' }}
           </button>
+          <p v-if="outlookError" class="mt-1 text-[11px] text-red-500">{{ outlookError }}</p>
         </template>
       </div>
     </div>
@@ -118,7 +119,7 @@ const route = useRoute()
 const { profile, signOut, isAdmin } = useAuth()
 const { config: roomConfig, fetch: fetchConfig } = useRoomConfig()
 const meetingsApi = useMeetings()
-const { connected: outlookConnected, loading: outlookLoading, connect: outlookConnect, disconnect: outlookDisconnect, checkConnection: outlookCheckConnection } = useOutlookCalendar()
+const { connected: outlookConnected, loading: outlookLoading, error: outlookError, connect: outlookConnect, disconnect: outlookDisconnect, checkConnection: outlookCheckConnection } = useOutlookCalendar()
 
 const handleConnectOutlook = () => outlookConnect()
 const handleDisconnectOutlook = async () => {

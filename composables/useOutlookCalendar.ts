@@ -20,6 +20,7 @@ export const useOutlookCalendar = () => {
   /** Inicia o fluxo OAuth — redireciona para Microsoft */
   const connect = () => {
     const clientId = config.public.microsoftClientId
+    console.log('[outlook] connect() chamado, clientId:', clientId ? 'presente' : 'VAZIO')
     if (!clientId) {
       error.value = 'Microsoft Client ID não configurado'
       return
